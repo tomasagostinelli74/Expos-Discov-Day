@@ -74,7 +74,6 @@
   h1, h2, h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; letter-spacing: -.01em; margin: 0; }
   .hero h1 { font-size: clamp(34px, 6vw, 58px); line-height: 1.04; }
   .hero h1 em { font-style: normal; color: #f2b84b; }
-  .hero p.lead { font-size: clamp(16px, 2vw, 19px); color: rgba(255,255,255,.78); margin: 18px 0 30px; max-width: 560px; }
 
   .search {
     display: flex; align-items: center; gap: 12px; background: #fff; color: var(--ink);
@@ -92,8 +91,6 @@
     padding: 10px 14px; border-radius: 12px; cursor: pointer;
   }
   .search button.clear[hidden] { display: none; }
-  .stats { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 22px; font-size: 14px; color: rgba(255,255,255,.7); }
-  .stats b { color: #fff; font-weight: 700; }
 
   /* ---------- Sections ---------- */
   main { padding: 48px 0 72px; }
@@ -201,8 +198,6 @@
   .career:hover { box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--fac) 30%, var(--line)); }
   .career h3 { font-family: Manrope, sans-serif; font-size: 17px; font-weight: 700; line-height: 1.3; }
   .career .variant { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--fac); }
-  .career .fac-name { font-size: 13px; color: var(--muted); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
-  .career .fac-name i { width: 8px; height: 8px; border-radius: 50%; background: var(--fac); display: inline-block; }
 
   .empty { text-align: center; padding: 56px 16px; color: var(--muted); background: var(--card); border: 1px dashed var(--line); border-radius: var(--radius); }
   .empty strong { display: block; color: var(--ink); font-size: 18px; margin-bottom: 4px; }
@@ -223,11 +218,9 @@
     .hero-body.compact { padding: 4px 0 22px; }
     .eyebrow { font-size: 11px; margin-bottom: 10px; }
     .hero h1 { font-size: 32px; }
-    .hero p.lead { font-size: 15px; margin: 12px 0 20px; }
     .search { padding: 4px 4px 4px 14px; border-radius: 14px; }
     .search input { font-size: 16px; padding: 11px 0; }
     .search button.clear { padding: 9px 11px; font-size: 13px; }
-    .stats { gap: 4px 14px; margin-top: 14px; font-size: 13px; }
 
     main { padding: 24px 0 48px; }
     .section-head { margin-bottom: 14px; }
@@ -638,15 +631,12 @@ function cardsOf(programs) {
   return items;
 }
 
-function careerCard(it, showFac) {
-  const fac = FAC[it.p.fac];
-  const style = showFac ? ` style="--fac:${fac.color};--fac-soft:color-mix(in srgb, ${fac.color} 10%, #fff)"` : '';
+function careerCard(it) {
   return `
-  <article class="career"${style}>
+  <article class="career">
     <div>
       <h3>${esc(it.p.name)}</h3>
       ${it.label ? `<div class="variant">${icon(/Sede/.test(it.label) ? 'pin' : 'info')}${esc(it.label)}</div>` : ''}
-      ${showFac ? `<div class="fac-name"><i></i>${esc(fac.nombre)}</div>` : ''}
     </div>
     <a class="btn" href="${esc(it.link)}" target="_blank" rel="noopener" aria-label="Ver arancel de ${esc(it.p.name + (it.label ? ' · ' + it.label : ''))}">${icon('file')}Ver arancel</a>
   </article>`;
@@ -668,31 +658,8 @@ function renderHome() {
       <div class="hero-body">
         <p class="eyebrow">Aranceles de grado y pregrado</p>
         <h1>Encontrá el arancel de <em>tu carrera</em></h1>
-        <p class="lead">Elegí tu facultad o buscá la carrera directamente. Cada arancel incluye sede y modalidad de cursada.</p>
-        ${searchBox('Buscá tu carrera…')}
-        <div class="stats">
-          <span><b>${FACULTADES.length}</b> facultades</span>
-          <span><b>${PROGRAMS.length}</b> propuestas académicas</span>
-          <span><b>${PROGRAMS.reduce((n, p) => n + p.variants.length + (p.main ? 1 : 0), 0)}</b> opciones de sede y modalidad</span>
-        </div>
       </div>
     </div>`;
-  bindSearch(renderHomeBody);
-  renderHomeBody();
-}
-
-function renderHomeBody() {
-  const q = norm(state.q);
-  if (q) {
-    const terms = q.split(' ');
-    const hits = cardsOf(PROGRAMS).filter(it => terms.every(t => it.search.includes(t) || norm(FAC[it.p.fac].nombre).includes(t) || it.p.fac.toLowerCase() === t));
-    $app.innerHTML = `
-      <div class="section-head">
-        <div><h2>Resultados</h2><p>${hits.length} ${hits.length === 1 ? 'arancel encontrado' : 'aranceles encontrados'}</p></div>
-      </div>
-      ${hits.length ? `<div class="careers">${hits.map(it => careerCard(it, true)).join('')}</div>` : emptyState(state.q)}`;
-    return;
-  }
   $app.innerHTML = `
     <div class="section-head">
       <div><h2>Facultades</h2><p>Elegí una facultad para ver los aranceles de sus carreras.</p></div>
