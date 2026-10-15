@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aranceles UADE</title>
+<meta name="description" content="Consultá los aranceles de todas las carreras de UADE, por facultad.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #121f2f;
+    --navy-2: #1b2d44;
+    --ink: #172231;
+    --muted: #5d6878;
+    --line: #e4e1da;
+    --bg: #f6f4ef;
+    --card: #ffffff;
+    --radius: 18px;
+    --shadow: 0 1px 2px rgba(18,31,47,.06), 0 8px 24px rgba(18,31,47,.06);
+    --shadow-lg: 0 2px 4px rgba(18,31,47,.08), 0 18px 40px rgba(18,31,47,.14);
+    --fac: #121f2f;
+    --fac-soft: #eef0f3;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 400 16px/1.5 Manrope, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid #f2b84b; outline-offset: 2px; border-radius: 8px; }
+  .wrap { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  svg.i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; overflow: hidden; color: #fff;
+    background:
+      radial-gradient(900px 420px at 88% -10%, rgba(29,78,216,.35), transparent 60%),
+      radial-gradient(700px 380px at -5% 110%, rgba(122,31,61,.45), transparent 60%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 100%);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+  }
+  .topbar { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  .topbar a.brand { display: inline-flex; }
+  .logo { height: 30px; width: auto; filter: brightness(0) invert(1); }
+  .cohort {
+    display: inline-flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+  }
+  .cohort span { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.7); padding: 0 8px 0 10px; }
+  .cohort button {
+    border: 0; background: transparent; color: #fff; font: inherit; font-size: 14px; font-weight: 700;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: background .2s ease, color .2s ease;
+  }
+  .cohort button:hover { background: rgba(255,255,255,.12); }
+  .cohort button[aria-pressed="true"], .cohort b { background: #fff; color: var(--navy); }
+  .cohort b { font-size: 14px; font-weight: 700; padding: 7px 14px; border-radius: 999px; }
+  .fac-hero .cohort button[aria-pressed="true"], .fac-hero .cohort b { color: var(--fac); }
+  @media (max-width: 380px) { .cohort span { display: none; } }
+  .hero-body { position: relative; z-index: 1; padding: 36px 0 64px; max-width: 760px; }
+  .hero-body.compact { padding: 8px 0 40px; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.65); margin: 0 0 14px; }
+  h1, h2, h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; letter-spacing: -.01em; margin: 0; }
+  .hero h1 { font-size: clamp(34px, 6vw, 58px); line-height: 1.04; }
+  .hero h1 em { font-style: normal; color: #f2b84b; }
+  .hero p.lead { font-size: clamp(16px, 2vw, 19px); color: rgba(255,255,255,.78); margin: 18px 0 30px; max-width: 560px; }
+
+  .search {
+    display: flex; align-items: center; gap: 12px; background: #fff; color: var(--ink);
+    border-radius: 16px; padding: 6px 6px 6px 18px; box-shadow: 0 10px 40px rgba(0,0,0,.25);
+    max-width: 620px;
+  }
+  .search svg.i { font-size: 20px; color: var(--muted); }
+  .search input {
+    flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 17px; padding: 12px 0; color: var(--ink);
+  }
+  .search input::placeholder { color: #8a93a1; }
+  .search input::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
+  .search button.clear {
+    border: 0; background: var(--bg); color: var(--muted); font: inherit; font-size: 14px; font-weight: 600;
+    padding: 10px 14px; border-radius: 12px; cursor: pointer;
+  }
+  .search button.clear[hidden] { display: none; }
+  .stats { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 22px; font-size: 14px; color: rgba(255,255,255,.7); }
+  .stats b { color: #fff; font-weight: 700; }
+
+  /* ---------- Sections ---------- */
+  main { padding: 48px 0 72px; }
+  .section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+  .section-head h2 { font-size: clamp(24px, 3vw, 32px); }
+  .section-head p { margin: 4px 0 0; color: var(--muted); }
+
+  /* ---------- Faculty grid ---------- */
+  .fac-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); }
+  .fac-card {
+    --c: #333;
+    position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 196px; padding: 22px; border-radius: var(--radius); text-decoration: none; color: #fff;
+    background: linear-gradient(150deg, color-mix(in srgb, var(--c) 82%, #fff) 0%, var(--c) 55%, color-mix(in srgb, var(--c) 75%, #000) 100%);
+    box-shadow: var(--shadow); transition: transform .25s ease, box-shadow .25s ease;
+    animation: rise .5s ease both;
+  }
+  .fac-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .fac-card .wm { position: absolute; right: -18px; bottom: -22px; font-size: 150px; opacity: .14; transition: transform .4s ease; }
+  .fac-card:hover .wm { transform: rotate(-8deg) scale(1.06); }
+  .fac-card .ico {
+    width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 22px;
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25); backdrop-filter: blur(4px);
+  }
+  .fac-card .code { font-size: 12px; font-weight: 800; letter-spacing: .16em; opacity: .8; margin: 18px 0 4px; }
+  .fac-card h3 { font-size: 22px; line-height: 1.15; }
+  .fac-card .foot { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; font-size: 14px; font-weight: 600; position: relative; }
+  .fac-card .go { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--c); transition: transform .25s ease; }
+  .fac-card:hover .go { transform: translateX(4px); }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  .help {
+    margin-top: 28px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px;
+  }
+  .help .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: #fdf3df; color: #b7791f; font-size: 20px; flex: none; }
+  .help div { flex: 1; min-width: 220px; }
+  .help strong { display: block; }
+  .help span { color: var(--muted); font-size: 14px; }
+
+  /* ---------- Buttons / chips ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;
+    font-weight: 700; font-size: 14px; padding: 11px 16px; border-radius: 12px; border: 0; cursor: pointer;
+    background: var(--fac); color: #fff; transition: filter .2s ease, transform .2s ease; white-space: nowrap;
+  }
+  .btn:hover { filter: brightness(1.1); }
+  .btn:active { transform: scale(.98); }
+  .btn.ghost { background: var(--fac-soft); color: var(--fac); }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-size: 13px; font-weight: 600;
+    padding: 7px 11px; border-radius: 10px; border: 1px solid var(--line); background: #fff; color: var(--ink);
+    transition: border-color .2s ease, background .2s ease, color .2s ease;
+  }
+  .chip:hover { border-color: var(--fac); color: var(--fac); background: var(--fac-soft); }
+  .chip svg.i { color: var(--fac); }
+
+  /* ---------- Faculty view ---------- */
+  .fac-hero { background:
+      radial-gradient(700px 360px at 95% -20%, rgba(255,255,255,.18), transparent 60%),
+      linear-gradient(150deg, color-mix(in srgb, var(--fac) 85%, #fff) 0%, var(--fac) 50%, color-mix(in srgb, var(--fac) 70%, #000) 100%); }
+  .back {
+    display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: 600; font-size: 14px;
+    padding: 8px 14px 8px 10px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.2);
+    transition: background .2s ease;
+  }
+  .back:hover { background: rgba(255,255,255,.24); }
+  .fac-title { display: flex; align-items: center; gap: 18px; margin-top: 22px; }
+  .fac-title .ico { width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center; font-size: 30px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.28); flex: none; }
+  .fac-title .code { font-size: 13px; font-weight: 800; letter-spacing: .16em; opacity: .8; }
+  .fac-title h1 { font-size: clamp(28px, 5vw, 46px); line-height: 1.05; }
+
+  .toolbar { display: flex; flex-direction: column; gap: 14px; margin-bottom: 26px; }
+  .toolbar .search { box-shadow: var(--shadow); max-width: none; border: 1px solid var(--line); }
+  .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: none; border: 1px solid var(--line); background: #fff; color: var(--ink); font: inherit; font-size: 14px; font-weight: 600;
+    padding: 9px 14px; border-radius: 999px; cursor: pointer; transition: all .2s ease;
+  }
+  .tab .n { color: var(--muted); font-weight: 500; margin-left: 4px; }
+  .tab[aria-pressed="true"] { background: var(--fac); border-color: var(--fac); color: #fff; }
+  .tab[aria-pressed="true"] .n { color: rgba(255,255,255,.75); }
+
+  .ingreso {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap; text-decoration: none;
+    background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--fac);
+    border-radius: 14px; padding: 16px 18px; margin-bottom: 22px; transition: box-shadow .2s ease;
+  }
+  .ingreso:hover { box-shadow: var(--shadow); }
+  .ingreso .ico { font-size: 22px; color: var(--fac); }
+  .ingreso div { flex: 1; min-width: 200px; }
+  .ingreso strong { display: block; }
+  .ingreso span { color: var(--muted); font-size: 14px; }
+  .ingreso .more { font-weight: 700; color: var(--fac); font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .group-title { font-family: Manrope, sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 30px 0 14px; display: flex; align-items: center; gap: 12px; }
+  .group-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .group-title:first-child { margin-top: 0; }
+
+  .careers { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+  .career {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
+    display: flex; flex-direction: column; gap: 14px; transition: box-shadow .25s ease, border-color .25s ease, transform .25s ease;
+    animation: rise .4s ease both;
+  }
+  .career:hover { box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--fac) 30%, var(--line)); }
+  .career .tag { display: inline-flex; align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--fac); background: var(--fac-soft); padding: 4px 8px; border-radius: 6px; }
+  .career h3 { font-family: Manrope, sans-serif; font-size: 17px; font-weight: 700; line-height: 1.3; }
+  .career .fac-name { font-size: 13px; color: var(--muted); margin-top: -8px; display: flex; align-items: center; gap: 6px; }
+  .career .fac-name i { width: 8px; height: 8px; border-radius: 50%; background: var(--fac); display: inline-block; }
+  .career .variants-label { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+  .career .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .career .actions { display: flex; flex-direction: column; gap: 12px; }
+  .career .btn { align-self: flex-start; }
+
+  .empty { text-align: center; padding: 56px 16px; color: var(--muted); background: var(--card); border: 1px dashed var(--line); border-radius: var(--radius); }
+  .empty strong { display: block; color: var(--ink); font-size: 18px; margin-bottom: 4px; }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
+  footer img { height: 20px; opacity: .7; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero" id="hero"></header>
+<main><div class="wrap" id="app"></div></main>
+<footer>
+  <div class="wrap">
+    <img src="logo_uade.png" alt="UADE">
+    <span id="foot-note"></span>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN — editar acá
+   ===================================================================== */
+const CONFIG = {
+  // Períodos de ingreso a la venta. Con uno solo se muestra como etiqueta;
+  // con más de uno aparece un selector (el primero es el que abre por defecto).
+  // Para volver a vender Agosto, descomentar su línea: los links ya están cargados.
+  cohortes: [
+    { id: 'marzo',  nombre: 'Ingreso Marzo 2027', corto: 'Marzo 2027', examenIngreso: 'https://www.uade.edu.ar/media/mhdiytix/cronograma-sia-marzo-2027.pdf' },
+    // { id: 'agosto', nombre: 'Ingreso Agosto', corto: 'Agosto', examenIngreso: '' },
+  ],
+  notaPie: 'Los aranceles se publican en PDF y pueden actualizarse. Verificá siempre la versión vigente.',
+};
+
+// Orden en que se muestran las facultades en el menú principal.
+const FACULTADES = [
+  { id: 'FACE', nombre: 'Ciencias Económicas',               color: '#15803d', icono: 'chart'   },
+  { id: 'FAJU', nombre: 'Ciencias Jurídicas y Comunicación', color: '#b91c1c', icono: 'scale'   },
+  { id: 'FARU', nombre: 'Arquitectura y Urbanismo',          color: '#7a1f3d', icono: 'columns' },
+  { id: 'FAEN', nombre: 'Entretenimiento, Hospitalidad y Medios', color: '#1d4ed8', icono: 'mic'     },
+  { id: 'FASA', nombre: 'Ciencias de la Salud',              color: '#7e22ce', icono: 'heart'   },
+  { id: 'FAIN', nombre: 'Ingeniería y Ciencias Exactas',     color: '#b7791f', icono: 'cpu'     },
+  { id: 'FADI', nombre: 'Diseño',                            color: '#c2410c', icono: 'palette' },
+];
+
+/* =====================================================================
+   CARRERAS — [FACULTAD, NOMBRE, LINK PDF MARZO, LINK PDF AGOSTO]
+   · Hoy solo se muestra Marzo (ver CONFIG.cohortes); la columna Agosto queda guardada.
+   · Fuente: crm.uade.edu.ar/Aranceles (FACO figura acá como FAEN; Comunicación,
+     Comunicación Global, Publicidad y RR.PP. pasaron a FAJU).
+   · Si una carrera no tiene arancel para un ingreso, dejar ese link en ''.
+   · Las variantes de sede/modalidad van entre paréntesis y se agrupan
+     solas bajo la misma carrera: "Abogacía (Sede Recoleta)".
+   ===================================================================== */
+const CARRERAS = [
+  ["FAJU", "Abogacía", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/abogaciaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/abogaciaAgosto.pdf"],
+  ["FAJU", "Abogacía (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/abogacia_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/abogacia_intensivaAgosto.pdf"],
+  ["FAJU", "Abogacía (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/abogacia_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/abogacia_recoletaAgosto.pdf"],
+  ["FAJU", "Abogacía (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/abogacia_pinaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/abogacia_pinaAgosto.pdf"],
+  ["FAJU", "Abogacía - Sede Costa Argentina (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/abogacia_pina_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/abogacia_pina_hibridaAgosto.pdf"],
+  ["FAJU", "Abogacía (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/abogacia_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/abogacia_hibridaAgosto.pdf"],
+  ["FAJU", "Diplomatura en Derecho y Tecnología", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploderechoytecnoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploderechoytecnoAgosto.pdf"],
+  ["FAJU", "Doble Titulación Abogacía y Gobierno y Relaciones Internacionales (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/pcabogobrelint_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pcabogobrelint_recoletaAgosto.pdf"],
+  ["FAJU", "Doble Titulación en Política y Administración Pública y Gobierno y Relaciones Internacionales Mod. Flexible", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/politica_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/politica_hibridaAgosto.pdf"],
+  ["FAJU", "Licenciatura en Criminología y Ciberdelito", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/criminologiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/criminologiaAgosto.pdf"],
+  ["FAJU", "Licenciatura en Gobierno y Relaciones Internacionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/GobiernoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/GobiernoAgosto.pdf"],
+  ["FAJU", "Licenciatura en Gobierno y Relaciones Internacionales Flexible Mod. Flexible", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gobierno_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gobierno_hibridaAgosto.pdf"],
+  ["FAJU", "Licenciatura en Política y Administración Pública", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/admpublicaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/admpublicaAgosto.pdf"],
+  ["FAJU", "Licenciatura en Política y Administración Pública Flexible Mod. Flexible", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/admpublica_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/admpublica_hibridaAgosto.pdf"],
+  ["FAJU", "Martillero Público - Flexible (Sede Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/martillero_costaFlexMarzo.pdf", ""],
+  ["FAJU", "Martillero público, corredor y administrador de consorcios", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/martillero_publicoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/martillero_publicoAgosto.pdf"],
+  ["FAJU", "Martillero público, corredor y administrador de consorcios (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/martillero_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/martillero_onlineAgosto.pdf"],
+  ["FAJU", "Martillero público, corredor y administrador de consorcios (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/martillero_costaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/martillero_costaAgosto.pdf"],
+  ["FAJU", "Traductorado público en idioma inglés", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/traductorado_publicoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/traductorado_publicoAgosto.pdf"],
+  ["FAJU", "Traductorado público en idioma inglés - Ciclo", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/traductorado_cicloMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/traductorado_cicloAgosto.pdf"],
+  ["FAJU", "Plan Conjunto Traductor Público en Idioma Inglés - Intérprete Simultáneo de Idioma Inglés", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/interpretariadoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pctradintAgosto.pdf"],
+  ["FAJU", "Programa Conjunto Abogacía y Gobierno y Relaciones Internacionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/pcabogad_gob_relintMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pcabogad_gob_relintAgosto.pdf"],
+  ["FAJU", "Programa Conjunto Política y Administración Pública - Gobierno y Relaciones Internacionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/pcpol_adm_pub_gob_relintMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pcpol_adm_pub_gob_relintAgosto.pdf"],
+  ["FAJU", "Programa Conjunto Traductorado Público en Idioma Inglés y Traductorado Científico - Técnico de Idioma Inglés", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/pctradcientMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pctradintAgosto.pdf"],
+  ["FAEN", "Cocinero profesional (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/cocinero_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/cocinero_pAgosto.pdf"],
+  ["FAEN", "Diplomatura en Branded Content", "", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplobrandedcontentAgosto.pdf"],
+  ["FAEN", "Diplomatura en Comunicación Política Digital", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocompolidigitalMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocompolidigitalAgosto.pdf"],
+  ["FAEN", "Diplomatura en Contenido para Redes Sociales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocontredesocialesMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocontredesocialesAgosto.pdf"],
+  ["FAEN", "Diplomatura en Gestión de Plataformas Digitales de Entretenimiento", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplogestplataformasMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplogestplataformasAgosto.pdf"],
+  ["FAEN", "Diplomatura Experto en Panadería y Pastelería (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplopanaderia_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplopanaderia_pAgosto.pdf"],
+  ["FAEN", "Diplomatura Universitaria en Administración de Negocios Gastronómicos (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplonegastro_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplonegastro_pAgosto.pdf"],
+  ["FAEN", "Diplomatura Experto en Vinos, Coctelería y Destilados (COSTA ARG.)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploexpvinos_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploexpvinos_pAgosto.pdf"],
+  ["FAEN", "Gastronomía (Ciclo de Complementación Curricular)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ciclo_gastronomiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ciclo_gastronomiaAgosto.pdf"],
+  ["FAEN", "Gestión deportiva", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_deportivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_deportivaAgosto.pdf"],
+  ["FAEN", "Licenciatura en artes escénicas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/artes_escenicasMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/artes_escenicasAgosto.pdf"],
+  ["FAJU", "Licenciatura en ciencias de la comunicación", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comunicacionMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comunicacionAgosto.pdf"],
+  ["FAJU", "Licenciatura en Ciencias de la Comunicación - Ciclo (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ciclo_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ciclo_hibridaAgosto.pdf"],
+  ["FAJU", "Licenciatura en Ciencias de la Comunicación (Ciclo Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comunicaci%C3%B3n_ciclo_virtualMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comunicaci%C3%B3n_ciclo_virtualAgosto.pdf"],
+  ["FAJU", "Licenciatura en Ciencias de la Comunicación (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comunicacion_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comunicacion_hibridaAgosto.pdf"],
+  ["FAJU", "Licenciatura en ciencias de la comunicación (Ciclo de Licenciatura)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/cicloMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/cicloAgosto.pdf"],
+  ["FAEN", "Licenciatura en Comunicación Digital e Interactiva (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comunicacion_digital_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comunicacion_digital_hibridaAgosto.pdf"],
+  ["FAJU", "Licenciatura en Comunicación global", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comunicacion_globalMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comunicacion_globalAgosto.pdf"],
+  ["FAJU", "Licenciatura en Comunicación global (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comunicacion_global_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comunicacion_global_belgranoAgosto.pdf"],
+  ["FAEN", "Licenciatura en Deportes Electrónicos (Esports)", "https://dre.uade.edu.ar/Aranceles/01Marzo/depelectronicosMarzo.pdf", "https://dre.uade.edu.ar/Aranceles/02Agosto/depelectronicosAgosto.pdf"],
+  ["FAEN", "Licenciatura en Deportes Electrónicos (eSports) Sede Belgrano", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/depelectronicos_belgranoMarzo.pdf", ""],
+  ["FAEN", "Licenciatura en diseño audiovisual", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_audiovisualMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_audiovisualAgosto.pdf"],
+  ["FAEN", "Licenciatura en gastronomía", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gastronomiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gastronomiaAgosto.pdf"],
+  ["FAEN", "Licenciatura en gestión de medios y entretenimiento", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_de_mediosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_de_mediosAgosto.pdf"],
+  ["FAEN", "Licenciatura en gestión de medios y entretenimiento (ciclo)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_de_medios_cicloMarzo.pdf", ""],
+  ["FAEN", "Licenciatura en gestión de medios y entretenimiento (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_de_medios_recoletaMarzo.pdf", ""],
+  ["FAEN", "Licenciatura en Gestión de Medios y Entretenimiento (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_de_medios_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_de_medios_belgranoAgosto.pdf"],
+  ["FAEN", "Licenciatura en Gestión Deportiva (ciclo)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_deportiva_cicloMarzo.pdf", ""],
+  ["FAEN", "Licenciatura en Gestión Deportiva (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_deportiva_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_deportiva_recoletaAgosto.pdf"],
+  ["FAJU", "Licenciatura en publicidad", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/publicidadMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/publicidadAgosto.pdf"],
+  ["FAEN", "Licenciatura en Turismo y Hotelería Ciclo de Complementación Curricular", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/turismo_ciclo_Marzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/turismo_ciclo_Agosto.pdf"],
+  ["FAEN", "Licenciatura en Turismo y Hotelería + BA in Hospitality Management", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/turismoSIU.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/turismoSIU.pdf"],
+  ["FAEN", "Licenciatura en Turismo y Hotelería + BA in Hospitality Management (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/turismo_costaSIUMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/turismo_costaSIUAgosto.pdf"],
+  ["FAJU", "Licenciatura en Publicidad (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/publicidad_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/publicidad_recoletaAgosto.pdf"],
+  ["FAJU", "Licenciatura en relaciones públicas e institucionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrppMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrppAgosto.pdf"],
+  ["FAJU", "Licenciatura en Relaciones Públicas e Institucionales (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrpp_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrpp_intensivaAgosto.pdf"],
+  ["FAEN", "Licenciatura en turismo y hotelería", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/turismoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/turismoAgosto.pdf"],
+  ["FAEN", "Licenciatura en Turismo y Hotelería (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/turismo_costaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/turismo_costaAgosto.pdf"],
+  ["FAEN", "Periodismo deportivo", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/periodismo_deportivoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/periodismo_deportivoAgosto.pdf"],
+  ["FAJU", "Plan conjunto licenciado en relaciones públicas e institucionales - Licenciado en gobierno y relaciones internacionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrpp+rel_intMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrpp+rel_intAgosto.pdf"],
+  ["FAJU", "Plan conjunto licenciado en relaciones públicas e institucionales y ciencias de la comunicación", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrpp+comuMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrpp+comuAgosto.pdf"],
+  ["FAEN", "Programa corto de Actuación", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/actuacionMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/actuacionAgosto.pdf"],
+  ["FAEN", "Programa corto de organización de eventos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_de_eventosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_de_eventosAgosto.pdf"],
+  ["FAEN", "Programa corto de producción de espectáculos artísticos y musicales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/espectaculosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/espectaculosAgosto.pdf"],
+  ["FAEN", "Tecnicatura en arte culinario", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/arteculinarioMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/arteculinarioAgosto.pdf"],
+  ["FAEN", "Tecnicatura Universitaria en Hotelería (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/hoteleriaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/hoteleriaAgosto.pdf"],
+  ["FAEN", "Licenciatura en Comunicación Digital e Interactiva", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comunicacion_digitalMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comunicacion_digitalAgosto.pdf"],
+  ["FASA", "Licenciatura en Ciencias de Comportamiento", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comportamientoMarzo.pdf", ""],
+  ["FASA", "Diplomatura Avanzada en Gestión de Servicios de Salud Online", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplosaludavanzadaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplosaludAgosto.pdf"],
+  ["FASA", "Diplomatura en Gestión de Servicios de Salud", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplosaludMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplosaludAgosto.pdf"],
+  ["FASA", "Licenciatura en Gestión de Servicios de Salud", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/saludMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/saludAgosto.pdf"],
+  ["FASA", "Licenciatura en Gestión de Servicios de Salud - Ciclo", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/salud_cicloMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/salud_cicloAgosto.pdf"],
+  ["FASA", "Licenciatura en Gestión de Servicios de Salud (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/salud_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/salud_onlineAgosto.pdf"],
+  ["FASA", "Licenciatura en Gestión de Servicios de Salud - Ciclo (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/salud_ciclo_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/salud_ciclo_onlineAgosto.pdf"],
+  ["FASA", "Licenciatura en nutrición", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/nutricionMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/nutricionAgosto.pdf"],
+  ["FASA", "Licenciatura en Nutrición (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/nutricion_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/nutricion_intensivaAgosto.pdf"],
+  ["FASA", "Licenciatura en nutrición Flexible", "https://dre.uade.edu.ar/Aranceles/01Marzo/nutricion_flexibleMarzo.pdf", "https://dre.uade.edu.ar/Aranceles/02Agosto/nutricion_flexibleAgosto.pdf"],
+  ["FASA", "Licenciatura en nutrición Online", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/nutricion_onlineMarzo.pdf", ""],
+  ["FASA", "Licenciatura en psicología", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/psicologiaAgosto.pdf"],
+  ["FASA", "Licenciatura en Psicología (Mod. Flexible)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologia_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/psicologia_hibridaAgosto.pdf"],
+  ["FASA", "Licenciatura en Psicología (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologia_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02agosto/psicologia_onlineagosto.pdf"],
+  ["FASA", "Licenciatura en psicología (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologia_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/psicologia_belgranoAgosto.pdf"],
+  ["FASA", "Licenciatura en Psicología (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologia_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/psicologia_recoletaAgosto.pdf"],
+  ["FASA", "Licenciatura en Psicología (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologia_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/psicologia_pAgosto.pdf"],
+  ["FASA", "Licenciatura en Tecnología de Datos con Orientación Salud Digital", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/saludigitalmarzo.pdf", ""],
+  ["FACE", "Contador público", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ContadorMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ContadorAgosto.pdf"],
+  ["FACE", "Contador público (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/Contador_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/Contador_pAgosto.pdf"],
+  ["FACE", "Contador Público (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/contador_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/contador_hibridaAgosto.pdf"],
+  ["FACE", "Diplomatura en Administración de Inversiones Financieras", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploinvfinMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploinvfinAgosto.pdf"],
+  ["FACE", "Diplomatura en Criptomonedas y Finanzas Sustentables", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplo_criptoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplo_criptoAgosto.pdf"],
+  ["FACE", "Diplomatura en FinTech", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplofintechMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplofintechAgosto.pdf"],
+  ["FACE", "Diplomatura en Sistemas de Gestión Empresarial SAP Next-Gen", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplo_sapMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplo_sapAgosto.pdf"],
+  ["FACE", "Economía Empresarial Belgrano", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/eco_empresarial_BelgranoMarzo.pdf", ""],
+  ["FACE", "Licenciatura en administración de empresas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/laeMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/laeAgosto.pdf"],
+  ["FACE", "Licenciatura en Administración de Empresas + BA in Business", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/LAE_SIUMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/LAE_SIUAgosto.pdf"],
+  ["FACE", "Licenciatura en Administración de Empresas + BA in Business (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/siu_OnlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/siu_OnlineAgosto.pdf"],
+  ["FACE", "Licenciatura en Administración de Empresas (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_intensivaAgosto.pdf"],
+  ["FACE", "Licenciatura en Administración de Empresas Flexible (Sede Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_pFlexMarzo.pdf", ""],
+  ["FACE", "Licenciatura en administración de empresas (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_onlineAgosto.pdf"],
+  ["FACE", "Licenciatura en Administración de Empresas (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_belgranoAgosto.pdf"],
+  ["FACE", "Licenciatura en Administración de Empresas (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_recoletaAgosto.pdf"],
+  ["FACE", "Licenciatura en administración de empresas (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_pAgosto.pdf"],
+  ["FACE", "Licenciatura en Administración de Empresas y Bachelor in Business (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_siu_pinamarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_siu_pinaAgosto.pdf"],
+  ["FACE", "Licenciatura en Comercio Internacional (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comex_pMarzo.pdf", ""],
+  ["FACE", "Licenciatura en Comercio Internacional Flexible (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comex_pFlexMarzo.pdf", ""],
+  ["FACE", "Licenciatura en Comercio Internacional (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comercio_internacional_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comercio_internacional_recoletaAgosto.pdf"],
+  ["FACE", "Licenciatura en Marketing", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/marketingMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/marketingAgosto.pdf"],
+  ["FACE", "Licenciatura en Marketing - (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/marketing_pinaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/marketing_pinaAgosto.pdf"],
+  ["FACE", "Licenciatura en Marketing (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/marketing_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/marketing_belgranoAgosto.pdf"],
+  ["FACE", "Licenciatura en Marketing (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/marketing_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/marketing_recoletaAgosto.pdf"],
+  ["FACE", "Licenciatura en comercio internacional", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comercio_internacionalMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comercio_internacionalAgosto.pdf"],
+  ["FACE", "Licenciatura en Comercialización Flexible (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/marketing_pinaFlexMarzo.pdf", ""],
+  ["FACE", "Licenciatura en Comercio Internacional (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comercio_internacional_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comercio_internacional_hibridaAgosto.pdf"],
+  ["FACE", "Licenciatura en Dirección en Finanzas Globales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gfmMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gfmAgosto.pdf"],
+  ["FACE", "Licenciatura en Negocios Digitales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/negdigMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/negdigAgosto.pdf"],
+  ["FACE", "Licenciatura en Negocios Digitales (Costa Argentina)", "https://dre.uade.edu.ar/Aranceles/01Marzo/negdig_costaMarzo.pdf", "https://dre.uade.edu.ar/Aranceles/02Agosto/negdig_costaAgosto.pdf"],
+  ["FACE", "Licenciatura en Negocios Digitales (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/negdig_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/negdig_belgranoAgosto.pdf"],
+  ["FACE", "Licenciatura en Negocios Digitales (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/negdig_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/negdig_recoletaAgosto.pdf"],
+  ["FACE", "Licenciatura en Dirección de Negocios Globales (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gbm_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gbm_belgranoAgosto.pdf"],
+  ["FACE", "Licenciatura en dirección de negocios globales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gbmMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gbmAgosto.pdf"],
+  ["FACE", "Licenciatura en economía", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/economiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/economiaAgosto.pdf"],
+  ["FACE", "Licenciatura en finanzas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/finanzasMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/finanzasAgosto.pdf"],
+  ["FACE", "Licenciatura en Finanzas Digitales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/licenfinanzas_digMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/licenfinanzas_digagosto.pdf"],
+  ["FACE", "Licenciatura en recursos humanos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrhhMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrhhAgosto.pdf"],
+  ["FACE", "Licenciatura en Recursos Humanos (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrhh_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrhh_hibridaAgosto.pdf"],
+  ["FACE", "Plan conjunto Licenciatura en economía y Licenciatura en finanzas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/eco_y_finMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/eco_y_finAgosto.pdf"],
+  ["FACE", "Programa conjunto Contador público y Licenciatura en finanzas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/cp+finMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/cp+finAgosto.pdf"],
+  ["FACE", "Programa conjunto Contador y abogado", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/cp+aboMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/cp+aboAgosto.pdf"],
+  ["FACE", "Programa conjunto en administración y finanzas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_y_finMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_y_finAgosto.pdf"],
+  ["FACE", "Programa Conjunto Contador Público y Administración de Empresas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/cp+laeMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/cp+laeAgosto.pdf"],
+  ["FACE", "Programa conjunto Licenciatura en administración de empresas y contador público (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_cp_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_cp_pAgosto.pdf"],
+  ["FACE", "Programa conjunto Licenciado en administración de empresas y Licenciado en comercialización", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae+comMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae+comAgosto.pdf"],
+  ["FACE", "Programa conjunto Licenciado en administración de empresas y Licenciado en recursos humanos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae+rrhhMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae+rrhhAgosto.pdf"],
+  ["FACE", "Programa conjunto Licenciatura en administración de empresas y Licenciatura en comercio internacional", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae+ciMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae+ciAgosto.pdf"],
+  ["FACE", "Programa conjunto Licenciatura en comercialización y Licenciatura en comercio internacional", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/com+ciMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/com+ciAgosto.pdf"],
+  ["FAIN", "Diplomatura en Automatización y Prototipado", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploautomatizMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploautomatizAgosto.pdf"],
+  ["FAIN", "Diplomatura en Ciencias de Datos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocienciadatosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocienciadatosAgosto.pdf"],
+  ["FAIN", "Diplomatura en Ciencias de Datos (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocienciadatos_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocienciadatos_pAgosto.pdf"],
+  ["FAIN", "Diplomatura en Comercialización Agropecuaria", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocomagropMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocomagropAgosto.pdf"],
+  ["FAIN", "Diplomatura en Desarrollo Web Full Stack", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplodesarrollowebMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplodesarrollowebAgosto.pdf"],
+  ["FAIN", "Diplomatura en Desarrollo Web Full Stack (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplodesarrolloweb_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplodesarrolloweb_pAgosto.pdf"],
+  ["FAIN", "Diplomatura en Recursos Naturales y Ambiente", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplorecursosnatMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplorecursosnatAgosto.pdf"],
+  ["FAIN", "Diplomatura Universitaria en Alimentos Saludables y Sustentables", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploalisaludablesMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploalisaludablesAgosto.pdf"],
+  ["FAIN", "Ingeniería Industrial (Costa)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ing_industrial_pinamarzo.pdf", ""],
+  ["FAIN", "Ingeniería Industrial (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/industrial_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/industrial_belgranoAgosto.pdf"],
+  ["FAIN", "Ingeniería Informática (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informatica_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informatica_belgranoAgosto.pdf"],
+  ["FAIN", "Ingeniería Informática (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informatica_recoletaMarzo.pdf", ""],
+  ["FAIN", "Ingeniería electromecánica", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/electromecanicaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/electromecanicaAgosto.pdf"],
+  ["FAIN", "Ingeniería electrónica", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/electronicaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/electronicaAgosto.pdf"],
+  ["FAIN", "Ingeniería en alimentos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ing_alimentosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ing_alimentosAgosto.pdf"],
+  ["FAIN", "Ingeniería en informática", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informaticaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informaticaAgosto.pdf"],
+  ["FAIN", "Ingeniería industrial", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/industrialMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/industrialAgosto.pdf"],
+  ["FAIN", "Licenciatura en bioinformática", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/bioinformaticaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/bioinformaticaAgosto.pdf"],
+  ["FAIN", "Licenciatura en biotecnología", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/biotecnologiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/biotecnologiaAgosto.pdf"],
+  ["FAIN", "Licenciatura en Desarrollo de Videojuegos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lic_videojuegosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lic_videojuegosAgosto.pdf"],
+  ["FAIN", "Licenciatura en gestión ambiental", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_ambientalMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_ambientalAgosto.pdf"],
+  ["FAIN", "Licenciatura en Gestión Ambiental (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ambiental_belgranoMarzo.pdf", ""],
+  ["FAIN", "Licenciatura en gestión de la tecnología de la información", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacionMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacionAgosto.pdf"],
+  ["FAIN", "Licenciatura en Gestión de la tecnología de la información (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacion_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacion_intensivaAgosto.pdf"],
+  ["FAIN", "Licenciatura en Gestión de Tecnología de la Información (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacion_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacion_onlineAgosto.pdf"],
+  ["FAIN", "Licenciatura en Gestión de Tecnología de la Información (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacion_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacion_belgranoAgosto.pdf"],
+  ["FAIN", "Licenciatura en Gestión de Tecnología de la Información (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacion_costaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacion_costaAgosto.pdf"],
+  ["FAIN", "Licenciatura en Inteligencia Artificial y Ciencia de Datos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/intartificialMarzo.pdf", ""],
+  ["FAIN", "Licenciatura en Inteligencia Artificial y Ciencia de Datos (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/intartificial_BelgranoMarzo.pdf", ""],
+  ["FAIN", "Licenciatura en producción y gestión agropecuaria", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/agropecuariaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/agropecuariaAgosto.pdf"],
+  ["FAIN", "Licenciatura en Producción y Gestión Agropecuaria Mod. Flexible", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/agropecuaria_flexibleMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/agropecuaria_flexibleAgosto.pdf"],
+  ["FAIN", "Licenciatura en tecnología industrial de los alimentos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lic_alimentosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lic_alimentosAgosto.pdf"],
+  ["FAIN", "Plan conjunto licenciatura en tecnología industrial de los alimentos - Licenciatura en biotecnología", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ali+bioMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ali+bioAgosto.pdf"],
+  ["FAIN", "Programa conjunto ingeniería industrial e ingeniería electromecánica", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ind_elecMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ind_elecAgosto.pdf"],
+  ["FAIN", "Tecnicatura universitaria en desarrollo de video juegos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/videojuegosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/videojuegosAgosto.pdf"],
+  ["FAIN", "Tecnicatura universitaria en desarrollo del software", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/softwareMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/softwareAgosto.pdf"],
+  ["FAIN", "Tecnicatura universitaria en desarrollo del software (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/software_pinaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/software_pinaAgosto.pdf"],
+  ["FAIN", "Tecnicatura universitaria en desarrollo del software (online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/software_onlineMarzo.pdf", ""],
+  ["FADI", "Curso de Fotografía (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/fotografia_cursoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/fotografia_cursoAgosto.pdf"],
+  ["FADI", "Diplomatura en Desarrollo Inmobiliario Urbano", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplodesurbanoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplodesurbanoAgosto.pdf"],
+  ["FADI", "Diplomatura en Diseño de Identidad Visual", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/IdentiDataMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/IdentiDataAgosto.pdf"],
+  ["FADI", "Diplomatura en Diseño de Interiores y el Paisaje (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplopaisaje_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplopaisaje_pAgosto.pdf"],
+  ["FADI", "Diplomatura Estilismo y Narrativas para la Moda", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplomodaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02agosto/diplomodaestagosto.pdf"],
+  ["FADI", "Doble Titulación Gráfico y Multimedia y de Interacción (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/grafico_multimedia_pMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/grafico_multimedia_pAgosto.pdf"],
+  ["FADI", "Doble Titulación - Productos Interactivos y Realidad Virtual y Diseño Multimedia e Interacción", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/prodinterac_multimediaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/prodinterac_multimediaAgosto.pdf"],
+  ["FADI", "Licenciatura en diseño de interiores", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_de_interioresMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_de_interioresAgosto.pdf"],
+  ["FADI", "Licenciatura en Diseño de Productos Interactivos y Realidad Virtual", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/intercativos_realvirtMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/intercativos_realvirtAgosto.pdf"],
+  ["FADI", "Licenciatura en diseño gráfico", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_graficoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_graficoAgosto.pdf"],
+  ["FADI", "Licenciatura en Diseño Estratégico", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/dis_estrategicoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/dis_estrategicoagosto.pdf"],
+  ["FADI", "Licenciatura en diseño industrial", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_industrialMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_industrialAgosto.pdf"],
+  ["FADI", "Licenciatura en diseño multimedia y de interacción", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_multimediaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_multimediaAgosto.pdf"],
+  ["FADI", "Licenciatura en Diseño Multimedia e Interacción (Cursada híbrida)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_multimedia_hibridaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_multimedia_hibridaAgosto.pdf"],
+  ["FADI", "Licenciatura en Diseño Textil e Indumentaria", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_textilMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_textilAgosto.pdf"],
+  ["FADI", "Licenciatura en diseño multimedia y de interacción (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_multimedia_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_multimedia_intensivaAgosto.pdf"],
+  ["FADI", "Licenciatura en diseño y gestión de estéticas para la moda", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_modaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_modaAgosto.pdf"],
+  ["FADI", "Licenciatura en Diseño y Gestión de Estéticas para la Moda (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_moda_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_moda_recoletaAgosto.pdf"],
+  ["FADI", "Plan conjunto licenciado en diseño gráfico - Licenciado en diseño multimedia y de interacción", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/grafico_multimediaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/grafico+multimediaAgosto.pdf"],
+  ["FARU", "Arquitectura", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/arquitecturaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/arquitecturaAgosto.pdf"],
+  ["FARU", "Arquitectura (Costa Argentina)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/arquitectura_pinaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/arquitectura_pinaAgosto.pdf"]
+];
+
+/* ===================================================================== */
+
+const ICONS = {
+  chart:   '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
+  scale:   '<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>',
+  columns: '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+  mic:     '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+  heart:   '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>',
+  cpu:     '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>',
+  palette: '<circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.84-.44-1.13-.29-.29-.44-.65-.44-1.13a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.55-2.5 5.55-5.55C21.97 6.01 17.46 2 12 2Z"/>',
+  search:  '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  left:    '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  right:   '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  file:    '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 13h4M10 17h4M8 9h2"/>',
+  calendar:'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  info:    '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+  pin:     '<path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+};
+const icon = (name, cls = 'i') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ''}</svg>`;
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const norm = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+/* ---------- Agrupar variantes de sede / modalidad ---------- */
+
+// Etiqueta canónica de cada modalidad o sede reconocida (el orden define cómo se muestran).
+const MODS = [
+  [/costa/i,                 'Sede Costa Argentina'],
+  [/recoleta/i,              'Sede Recoleta'],
+  [/belgrano/i,              'Sede Belgrano'],
+  [/monserrat/i,             'Sede Monserrat'],
+  [/online/i,                'Online'],
+  [/h[ií]brid/i,             'Cursada híbrida'],
+  [/flexib/i,                'Mod. Flexible'],
+  [/intensiv/i,              'Mod. Intensiva'],
+];
+const isMod = s => MODS.some(([re]) => re.test(s)) && !/ciclo/i.test(s);
+const TRAILING = [/\s+-\s+Sede\s+.+$/i, /\s+Sede\s+\S+$/i, /\s+(Belgrano|Recoleta|Monserrat)$/i, /\s*-?\s*Mod\.\s*Flexible$/i, /\s*-?\s*Flexible$/i, /\s+Online$/i];
+
+function splitName(name) {
+  const found = [];
+  let base = name.replace(/\s*\(([^)]*)\)/g, (m, inner) => isMod(inner) ? (found.push(inner), ' ') : m);
+  base = base.replace(/\s+/g, ' ').trim();
+  for (let changed = true; changed;) {
+    changed = false;
+    for (const re of TRAILING) {
+      const m = base.match(re);
+      if (m) { found.push(m[0]); base = base.slice(0, m.index).trim(); changed = true; }
+    }
+    base = base.replace(/[\s\-–,]+$/, '');
+  }
+  const labels = MODS.filter(([re]) => found.some(f => re.test(f))).map(([, l]) => l);
+  return { base, mods: labels };
+}
+
+function category(base) {
+  const n = norm(base);
+  if (/^(diplomatura|programa corto|curso)/.test(n)) return 'Diplomaturas y cursos';
+  if (/^(plan conjunto|programa conjunto|doble titulacion)/.test(n)) return 'Dobles titulaciones';
+  if (/\bciclo\b/.test(n)) return 'Ciclos de complementación';
+  if (/^(tecnicatura|cocinero|martillero)/.test(n)) return 'Tecnicaturas y carreras cortas';
+  return 'Carreras de grado';
+}
+const CAT_ORDER = ['Carreras de grado', 'Dobles titulaciones', 'Ciclos de complementación', 'Tecnicaturas y carreras cortas', 'Diplomaturas y cursos'];
+
+const upperCount = s => (s.match(/[A-ZÁÉÍÓÚÑ]/g) || []).length;
+const capFirst = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+const FAC = Object.fromEntries(FACULTADES.map(f => [f.id, f]));
+
+// Agrupa las carreras que tienen arancel publicado para el ingreso `coh` (índice en CONFIG.cohortes).
+function build(coh) {
+  const programs = [];
+  const groups = new Map();
+  for (const row of CARRERAS) {
+    const [fac, name] = row;
+    const link = row[2 + coh];
+    if (!FAC[fac] || !link) continue;
+    const { base, mods } = splitName(name);
+    const key = fac + '|' + norm(base);
+    if (!groups.has(key)) groups.set(key, { fac, names: [], main: null, variants: [] });
+    const g = groups.get(key);
+    g.names.push(base);
+    if (!mods.length && !g.main) g.main = link;
+    else g.variants.push({ label: mods.join(' · ') || name, link });
+  }
+  for (const g of groups.values()) {
+    const display = capFirst(g.names.reduce((a, b) => upperCount(b) > upperCount(a) ? b : a));
+    const seen = new Set();
+    g.variants = g.variants
+      .filter(v => !seen.has(v.label) && seen.add(v.label))
+      .sort((a, b) => a.label.localeCompare(b.label, 'es'));
+    programs.push({
+      fac: g.fac, name: display, cat: category(display), main: g.main, variants: g.variants,
+      search: norm(display + ' ' + g.variants.map(v => v.label).join(' ')),
+    });
+  }
+  return programs.sort((a, b) => a.name.localeCompare(b.name, 'es'));
+}
+
+/* ---------- Render ---------- */
+
+const $hero = document.getElementById('hero');
+const $app = document.getElementById('app');
+document.getElementById('foot-note').textContent = CONFIG.notaPie;
+
+const state = { q: '', cat: 'Todas', coh: 0 };
+try {
+  const saved = CONFIG.cohortes.findIndex(c => c.id === sessionStorage.getItem('cohorte'));
+  if (saved >= 0) state.coh = saved;
+} catch (e) {}
+let PROGRAMS = build(state.coh);
+const cohorte = () => CONFIG.cohortes[state.coh];
+
+function setCohort(i) {
+  if (i === state.coh) return;
+  state.coh = i;
+  try { sessionStorage.setItem('cohorte', cohorte().id); } catch (e) {}
+  PROGRAMS = build(i);
+  route(true);
+}
+
+function setFacColors(fac) {
+  const root = document.documentElement.style;
+  if (fac) {
+    root.setProperty('--fac', fac.color);
+    root.setProperty('--fac-soft', `color-mix(in srgb, ${fac.color} 10%, #fff)`);
+  } else {
+    root.removeProperty('--fac');
+    root.removeProperty('--fac-soft');
+  }
+}
+
+const topbar = () => `
+  <div class="topbar">
+    <a class="brand" href="#" aria-label="Inicio"><img class="logo" src="logo_uade.png" alt="UADE"></a>
+    <div class="cohort" role="group" aria-label="Período de ingreso">
+      <span>Ingreso</span>
+      ${CONFIG.cohortes.length === 1
+        ? `<b>${esc(cohorte().corto)}</b>`
+        : CONFIG.cohortes.map((c, i) => `<button type="button" data-coh="${i}" aria-pressed="${i === state.coh}">${esc(c.corto)}</button>`).join('')}
+    </div>
+  </div>`;
+
+const searchBox = (placeholder) => `
+  <label class="search">
+    ${icon('search')}
+    <span class="sr-only">${esc(placeholder)}</span>
+    <input id="q" type="search" autocomplete="off" placeholder="${esc(placeholder)}" value="${esc(state.q)}">
+    <button type="button" class="clear" id="clear" ${state.q ? '' : 'hidden'}>Limpiar</button>
+  </label>`;
+
+function careerCard(p, showFac, showTag = true) {
+  const fac = FAC[p.fac];
+  const style = showFac ? ` style="--fac:${fac.color};--fac-soft:color-mix(in srgb, ${fac.color} 10%, #fff)"` : '';
+  const hasMain = !!p.main;
+  const chips = p.variants.map(v =>
+    `<a class="chip" href="${esc(v.link)}" target="_blank" rel="noopener">${icon(/Sede/.test(v.label) ? 'pin' : 'file')}${esc(v.label)}</a>`).join('');
+  return `
+  <article class="career"${style}>
+    ${showTag ? `<span class="tag">${esc(p.cat)}</span>` : ''}
+    <h3>${esc(p.name)}</h3>
+    ${showFac ? `<div class="fac-name"><i></i>${esc(fac.nombre)}</div>` : ''}
+    <div class="actions">
+      ${hasMain ? `<a class="btn" href="${esc(p.main)}" target="_blank" rel="noopener">${icon('file')}Ver arancel</a>` : ''}
+      ${chips ? `<div>
+        <div class="variants-label">${hasMain ? 'También disponible en' : 'Elegí sede o modalidad'}</div>
+        <div class="chips">${chips}</div>
+      </div>` : ''}
+    </div>
+  </article>`;
+}
+
+const emptyState = (q) => `
+  <div class="empty">
+    <strong>No encontramos “${esc(q)}”</strong>
+    Probá con otra palabra, por ejemplo “diseño”, “online” o “Recoleta”.
+  </div>`;
+
+function renderHome() {
+  setFacColors(null);
+  document.title = 'Aranceles UADE';
+  $hero.className = 'hero';
+  $hero.innerHTML = `
+    <div class="wrap">
+      ${topbar()}
+      <div class="hero-body">
+        <p class="eyebrow">Aranceles de grado y pregrado</p>
+        <h1>Encontrá el arancel de <em>tu carrera</em></h1>
+        <p class="lead">Elegí tu facultad o buscá la carrera directamente. Cada arancel incluye sede y modalidad de cursada.</p>
+        ${searchBox('Buscá tu carrera: Abogacía, Marketing, Psicología…')}
+        <div class="stats">
+          <span><b>${FACULTADES.length}</b> facultades</span>
+          <span><b>${PROGRAMS.length}</b> propuestas académicas</span>
+          <span><b>${PROGRAMS.reduce((n, p) => n + p.variants.length + (p.main ? 1 : 0), 0)}</b> opciones de sede y modalidad</span>
+        </div>
+      </div>
+    </div>`;
+  bindSearch(renderHomeBody);
+  renderHomeBody();
+}
+
+function renderHomeBody() {
+  const q = norm(state.q);
+  if (q) {
+    const terms = q.split(' ');
+    const hits = PROGRAMS.filter(p => terms.every(t => p.search.includes(t) || norm(FAC[p.fac].nombre).includes(t) || p.fac.toLowerCase() === t));
+    $app.innerHTML = `
+      <div class="section-head">
+        <div><h2>Resultados</h2><p>${hits.length} ${hits.length === 1 ? 'carrera encontrada' : 'carreras encontradas'}</p></div>
+      </div>
+      ${hits.length ? `<div class="careers">${hits.map(p => careerCard(p, true)).join('')}</div>` : emptyState(state.q)}`;
+    return;
+  }
+  $app.innerHTML = `
+    <div class="section-head">
+      <div><h2>Facultades</h2><p>Elegí una facultad para ver los aranceles de sus carreras.</p></div>
+    </div>
+    <div class="fac-grid">
+      ${FACULTADES.map((f, i) => {
+        const n = PROGRAMS.filter(p => p.fac === f.id).length;
+        return `
+        <a class="fac-card" href="#/${f.id}" style="--c:${f.color};animation-delay:${i * 45}ms">
+          <span class="wm">${icon(f.icono)}</span>
+          <div>
+            <span class="ico">${icon(f.icono)}</span>
+            <div class="code">${f.id}</div>
+            <h3>${esc(f.nombre)}</h3>
+          </div>
+          <div class="foot">
+            <span>${n} ${n === 1 ? 'propuesta' : 'propuestas'}</span>
+            <span class="go">${icon('right')}</span>
+          </div>
+        </a>`;
+      }).join('')}
+    </div>
+    ${cohorte().examenIngreso ? `
+    <div class="help">
+      <span class="ico">${icon('calendar')}</span>
+      <div>
+        <strong>Examen de ingreso</strong>
+        <span>Consultá fechas y cronograma del examen de ingreso.</span>
+      </div>
+      <a class="btn" style="--fac:#121f2f" href="${esc(cohorte().examenIngreso)}" target="_blank" rel="noopener">Ver cronograma ${icon('right')}</a>
+    </div>` : ''}`;
+}
+
+function renderFaculty(fac) {
+  setFacColors(fac);
+  document.title = `${fac.nombre} · Aranceles UADE`;
+  const progs = PROGRAMS.filter(p => p.fac === fac.id);
+  $hero.className = 'hero fac-hero';
+  $hero.innerHTML = `
+    <div class="wrap">
+      ${topbar()}
+      <div class="hero-body compact">
+        <a class="back" href="#">${icon('left')}Todas las facultades</a>
+        <div class="fac-title">
+          <span class="ico">${icon(fac.icono)}</span>
+          <div>
+            <div class="code">FACULTAD · ${fac.id}</div>
+            <h1>${esc(fac.nombre)}</h1>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  const cats = CAT_ORDER.filter(c => progs.some(p => p.cat === c));
+  if (!cats.includes(state.cat)) state.cat = 'Todas';
+  $app.innerHTML = `
+    ${cohorte().examenIngreso ? `
+    <a class="ingreso" href="${esc(cohorte().examenIngreso)}" target="_blank" rel="noopener">
+      <span class="ico">${icon('calendar')}</span>
+      <div><strong>Examen de ingreso</strong><span>Fechas y cronograma para ${esc(cohorte().nombre.toLowerCase())}.</span></div>
+      <span class="more">Ver cronograma ${icon('right')}</span>
+    </a>` : ''}
+    <div class="toolbar">
+      ${searchBox(`Buscar en ${fac.nombre}…`)}
+      ${cats.length > 1 ? `<div class="tabs" role="toolbar" aria-label="Tipo de propuesta">
+        ${['Todas', ...cats].map(c => {
+          const n = c === 'Todas' ? progs.length : progs.filter(p => p.cat === c).length;
+          return `<button type="button" class="tab" data-cat="${esc(c)}" aria-pressed="${state.cat === c}">${esc(c)}<span class="n">${n}</span></button>`;
+        }).join('')}
+      </div>` : ''}
+    </div>
+    <div id="list"></div>`;
+  $app.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => {
+    state.cat = b.dataset.cat;
+    $app.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t === b));
+    renderList();
+  }));
+  const renderList = () => {
+    const q = norm(state.q);
+    const terms = q ? q.split(' ') : [];
+    const hits = progs.filter(p => (state.cat === 'Todas' || p.cat === state.cat) && terms.every(t => p.search.includes(t)));
+    const $list = document.getElementById('list');
+    if (!hits.length) { $list.innerHTML = progs.length ? emptyState(state.q) : `<div class="empty"><strong>Próximamente</strong>Todavía no hay aranceles publicados para esta facultad en el ${esc(cohorte().nombre.toLowerCase())}.</div>`; return; }
+    const byCat = state.cat === 'Todas' && !q;
+    $list.innerHTML = byCat
+      ? cats.map(c => `<h2 class="group-title">${esc(c)}</h2><div class="careers">${hits.filter(p => p.cat === c).map(p => careerCard(p, false, false)).join('')}</div>`).join('')
+      : `<div class="careers">${hits.map(p => careerCard(p)).join('')}</div>`;
+  };
+  bindSearch(renderList);
+  renderList();
+}
+
+function bindSearch(onChange) {
+  const input = document.getElementById('q');
+  const clear = document.getElementById('clear');
+  input.addEventListener('input', () => {
+    state.q = input.value;
+    clear.hidden = !state.q;
+    onChange();
+  });
+  clear.addEventListener('click', () => {
+    input.value = state.q = '';
+    clear.hidden = true;
+    input.focus();
+    onChange();
+  });
+}
+
+function route(keep) {
+  const id = decodeURIComponent(location.hash.replace(/^#\/?/, '')).toUpperCase();
+  if (keep !== true) { state.q = ''; state.cat = 'Todas'; }
+  if (FAC[id]) renderFaculty(FAC[id]); else renderHome();
+  $hero.querySelectorAll('[data-coh]').forEach(b => b.addEventListener('click', () => setCohort(+b.dataset.coh)));
+  if (keep !== true) window.scrollTo({ top: 0, behavior: 'instant' });
+}
+window.addEventListener('hashchange', () => route());
+route();
+</script>
+</body>
+</html>
