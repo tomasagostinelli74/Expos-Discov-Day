@@ -143,14 +143,6 @@
   .btn:hover { filter: brightness(1.1); }
   .btn:active { transform: scale(.98); }
   .btn.ghost { background: var(--fac-soft); color: var(--fac); }
-  .chip {
-    display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-size: 13px; font-weight: 600;
-    padding: 7px 11px; border-radius: 10px; border: 1px solid var(--line); background: #fff; color: var(--ink);
-    transition: border-color .2s ease, background .2s ease, color .2s ease;
-  }
-  .chip:hover { border-color: var(--fac); color: var(--fac); background: var(--fac-soft); }
-  .chip svg.i { color: var(--fac); }
-
   /* ---------- Faculty view ---------- */
   .fac-hero { background:
       radial-gradient(700px 360px at 95% -20%, rgba(255,255,255,.18), transparent 60%),
@@ -166,7 +158,12 @@
   .fac-title .code { font-size: 13px; font-weight: 800; letter-spacing: .16em; opacity: .8; }
   .fac-title h1 { font-size: clamp(28px, 5vw, 46px); line-height: 1.05; }
 
-  .toolbar { display: flex; flex-direction: column; gap: 14px; margin-bottom: 26px; }
+  .toolbar {
+    display: flex; flex-direction: column; gap: 12px; margin: 0 -16px 22px; padding: 12px 16px;
+    position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  @media (min-width: 720px) { .toolbar { margin: 0 -32px 26px; padding: 12px 32px; } }
   .toolbar .search { box-shadow: var(--shadow); max-width: none; border: 1px solid var(--line); }
   .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }
@@ -194,21 +191,18 @@
   .group-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   .group-title:first-child { margin-top: 0; }
 
-  .careers { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+  .careers { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
   .career {
     background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
-    display: flex; flex-direction: column; gap: 14px; transition: box-shadow .25s ease, border-color .25s ease, transform .25s ease;
+    display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 14px;
+    transition: box-shadow .25s ease, border-color .25s ease;
     animation: rise .4s ease both;
   }
   .career:hover { box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--fac) 30%, var(--line)); }
-  .career .tag { display: inline-flex; align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--fac); background: var(--fac-soft); padding: 4px 8px; border-radius: 6px; }
   .career h3 { font-family: Manrope, sans-serif; font-size: 17px; font-weight: 700; line-height: 1.3; }
-  .career .fac-name { font-size: 13px; color: var(--muted); margin-top: -8px; display: flex; align-items: center; gap: 6px; }
+  .career .variant { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--fac); }
+  .career .fac-name { font-size: 13px; color: var(--muted); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
   .career .fac-name i { width: 8px; height: 8px; border-radius: 50%; background: var(--fac); display: inline-block; }
-  .career .variants-label { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
-  .career .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .career .actions { display: flex; flex-direction: column; gap: 12px; }
-  .career .btn { align-self: flex-start; }
 
   .empty { text-align: center; padding: 56px 16px; color: var(--muted); background: var(--card); border: 1px dashed var(--line); border-radius: var(--radius); }
   .empty strong { display: block; color: var(--ink); font-size: 18px; margin-bottom: 4px; }
@@ -216,6 +210,63 @@
   footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
   footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
   footer img { height: 20px; opacity: .7; }
+
+  /* ---------- Teléfono ---------- */
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .topbar { padding: 14px 0; }
+    .logo { height: 24px; }
+    .cohort { padding: 3px; }
+    .cohort span { font-size: 11px; padding: 0 6px 0 8px; }
+    .cohort b, .cohort button { font-size: 13px; padding: 6px 11px; }
+    .hero-body { padding: 14px 0 30px; }
+    .hero-body.compact { padding: 4px 0 22px; }
+    .eyebrow { font-size: 11px; margin-bottom: 10px; }
+    .hero h1 { font-size: 32px; }
+    .hero p.lead { font-size: 15px; margin: 12px 0 20px; }
+    .search { padding: 4px 4px 4px 14px; border-radius: 14px; }
+    .search input { font-size: 16px; padding: 11px 0; }
+    .search button.clear { padding: 9px 11px; font-size: 13px; }
+    .stats { gap: 4px 14px; margin-top: 14px; font-size: 13px; }
+
+    main { padding: 24px 0 48px; }
+    .section-head { margin-bottom: 14px; }
+    .section-head h2 { font-size: 22px; }
+    .section-head p { font-size: 14px; }
+
+    .fac-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .fac-card { min-height: 150px; padding: 14px; border-radius: 16px; }
+    .fac-card:last-child:nth-child(odd) { grid-column: span 2; min-height: 120px; }
+    .fac-card .wm { font-size: 96px; right: -14px; bottom: -16px; }
+    .fac-card .ico { width: 36px; height: 36px; border-radius: 11px; font-size: 18px; }
+    .fac-card .code { font-size: 11px; margin: 10px 0 2px; }
+    .fac-card h3 { font-size: 16px; line-height: 1.2; }
+    .fac-card .foot { margin-top: 10px; font-size: 12px; }
+    .fac-card .go { width: 28px; height: 28px; }
+    .fac-card:hover { transform: none; }
+    .help { margin-top: 18px; padding: 14px; gap: 12px; }
+    .help .btn { width: 100%; }
+
+    .back { font-size: 13px; padding: 6px 12px 6px 8px; }
+    .fac-title { gap: 12px; margin-top: 16px; }
+    .fac-title .ico { width: 46px; height: 46px; border-radius: 14px; font-size: 22px; }
+    .fac-title .code { font-size: 11px; }
+    .fac-title h1 { font-size: 24px; line-height: 1.12; }
+
+    .ingreso { padding: 12px 14px; gap: 10px; margin-bottom: 4px; border-left-width: 4px; }
+    .ingreso div { min-width: 0; }
+    .ingreso span { font-size: 13px; }
+    .ingreso .more { width: 100%; padding-left: 32px; }
+    .tab { padding: 8px 12px; font-size: 13px; }
+    .group-title { font-size: 12px; margin: 22px 0 10px; }
+
+    .careers { gap: 10px; }
+    .career { padding: 16px; gap: 12px; border-radius: 14px; animation: none; }
+    .career h3 { font-size: 16px; }
+    .career .variant { font-size: 13px; }
+    .btn { min-height: 44px; padding: 10px 16px; }
+    footer { padding: 22px 0 32px; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -621,24 +672,28 @@ const searchBox = (placeholder) => `
     <button type="button" class="clear" id="clear" ${state.q ? '' : 'hidden'}>Limpiar</button>
   </label>`;
 
-function careerCard(p, showFac, showTag = true) {
-  const fac = FAC[p.fac];
+// Una tarjeta por arancel (PDF): la carrera principal y cada sede/modalidad por separado.
+function cardsOf(programs) {
+  const items = [];
+  for (const p of programs) {
+    if (p.main) items.push({ p, label: '', link: p.main });
+    for (const v of p.variants) items.push({ p, label: v.label, link: v.link });
+  }
+  for (const it of items) it.search = norm(it.p.name + ' ' + it.label);
+  return items;
+}
+
+function careerCard(it, showFac) {
+  const fac = FAC[it.p.fac];
   const style = showFac ? ` style="--fac:${fac.color};--fac-soft:color-mix(in srgb, ${fac.color} 10%, #fff)"` : '';
-  const hasMain = !!p.main;
-  const chips = p.variants.map(v =>
-    `<a class="chip" href="${esc(v.link)}" target="_blank" rel="noopener">${icon(/Sede/.test(v.label) ? 'pin' : 'file')}${esc(v.label)}</a>`).join('');
   return `
   <article class="career"${style}>
-    ${showTag ? `<span class="tag">${esc(p.cat)}</span>` : ''}
-    <h3>${esc(p.name)}</h3>
-    ${showFac ? `<div class="fac-name"><i></i>${esc(fac.nombre)}</div>` : ''}
-    <div class="actions">
-      ${hasMain ? `<a class="btn" href="${esc(p.main)}" target="_blank" rel="noopener">${icon('file')}Ver arancel</a>` : ''}
-      ${chips ? `<div>
-        <div class="variants-label">${hasMain ? 'También disponible en' : 'Elegí sede o modalidad'}</div>
-        <div class="chips">${chips}</div>
-      </div>` : ''}
+    <div>
+      <h3>${esc(it.p.name)}</h3>
+      ${it.label ? `<div class="variant">${icon(/Sede/.test(it.label) ? 'pin' : 'info')}${esc(it.label)}</div>` : ''}
+      ${showFac ? `<div class="fac-name"><i></i>${esc(fac.nombre)}</div>` : ''}
     </div>
+    <a class="btn" href="${esc(it.link)}" target="_blank" rel="noopener" aria-label="Ver arancel de ${esc(it.p.name + (it.label ? ' · ' + it.label : ''))}">${icon('file')}Ver arancel</a>
   </article>`;
 }
 
@@ -659,7 +714,7 @@ function renderHome() {
         <p class="eyebrow">Aranceles de grado y pregrado</p>
         <h1>Encontrá el arancel de <em>tu carrera</em></h1>
         <p class="lead">Elegí tu facultad o buscá la carrera directamente. Cada arancel incluye sede y modalidad de cursada.</p>
-        ${searchBox('Buscá tu carrera: Abogacía, Marketing, Psicología…')}
+        ${searchBox('Buscá tu carrera…')}
         <div class="stats">
           <span><b>${FACULTADES.length}</b> facultades</span>
           <span><b>${PROGRAMS.length}</b> propuestas académicas</span>
@@ -675,12 +730,12 @@ function renderHomeBody() {
   const q = norm(state.q);
   if (q) {
     const terms = q.split(' ');
-    const hits = PROGRAMS.filter(p => terms.every(t => p.search.includes(t) || norm(FAC[p.fac].nombre).includes(t) || p.fac.toLowerCase() === t));
+    const hits = cardsOf(PROGRAMS).filter(it => terms.every(t => it.search.includes(t) || norm(FAC[it.p.fac].nombre).includes(t) || it.p.fac.toLowerCase() === t));
     $app.innerHTML = `
       <div class="section-head">
-        <div><h2>Resultados</h2><p>${hits.length} ${hits.length === 1 ? 'carrera encontrada' : 'carreras encontradas'}</p></div>
+        <div><h2>Resultados</h2><p>${hits.length} ${hits.length === 1 ? 'arancel encontrado' : 'aranceles encontrados'}</p></div>
       </div>
-      ${hits.length ? `<div class="careers">${hits.map(p => careerCard(p, true)).join('')}</div>` : emptyState(state.q)}`;
+      ${hits.length ? `<div class="careers">${hits.map(it => careerCard(it, true)).join('')}</div>` : emptyState(state.q)}`;
     return;
   }
   $app.innerHTML = `
@@ -720,6 +775,7 @@ function renderFaculty(fac) {
   setFacColors(fac);
   document.title = `${fac.nombre} · Aranceles UADE`;
   const progs = PROGRAMS.filter(p => p.fac === fac.id);
+  const items = cardsOf(progs);
   $hero.className = 'hero fac-hero';
   $hero.innerHTML = `
     <div class="wrap">
@@ -745,10 +801,10 @@ function renderFaculty(fac) {
       <span class="more">Ver cronograma ${icon('right')}</span>
     </a>` : ''}
     <div class="toolbar">
-      ${searchBox(`Buscar en ${fac.nombre}…`)}
+      ${searchBox('Buscá una carrera…')}
       ${cats.length > 1 ? `<div class="tabs" role="toolbar" aria-label="Tipo de propuesta">
         ${['Todas', ...cats].map(c => {
-          const n = c === 'Todas' ? progs.length : progs.filter(p => p.cat === c).length;
+          const n = c === 'Todas' ? items.length : items.filter(it => it.p.cat === c).length;
           return `<button type="button" class="tab" data-cat="${esc(c)}" aria-pressed="${state.cat === c}">${esc(c)}<span class="n">${n}</span></button>`;
         }).join('')}
       </div>` : ''}
@@ -762,13 +818,13 @@ function renderFaculty(fac) {
   const renderList = () => {
     const q = norm(state.q);
     const terms = q ? q.split(' ') : [];
-    const hits = progs.filter(p => (state.cat === 'Todas' || p.cat === state.cat) && terms.every(t => p.search.includes(t)));
+    const hits = items.filter(it => (state.cat === 'Todas' || it.p.cat === state.cat) && terms.every(t => it.search.includes(t)));
     const $list = document.getElementById('list');
     if (!hits.length) { $list.innerHTML = progs.length ? emptyState(state.q) : `<div class="empty"><strong>Próximamente</strong>Todavía no hay aranceles publicados para esta facultad en el ${esc(cohorte().nombre.toLowerCase())}.</div>`; return; }
     const byCat = state.cat === 'Todas' && !q;
     $list.innerHTML = byCat
-      ? cats.map(c => `<h2 class="group-title">${esc(c)}</h2><div class="careers">${hits.filter(p => p.cat === c).map(p => careerCard(p, false, false)).join('')}</div>`).join('')
-      : `<div class="careers">${hits.map(p => careerCard(p)).join('')}</div>`;
+      ? cats.map(c => `<h2 class="group-title">${esc(c)}</h2><div class="careers">${hits.filter(it => it.p.cat === c).map(it => careerCard(it)).join('')}</div>`).join('')
+      : `<div class="careers">${hits.map(it => careerCard(it)).join('')}</div>`;
   };
   bindSearch(renderList);
   renderList();
