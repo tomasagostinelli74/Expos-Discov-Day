@@ -168,9 +168,7 @@
     flex: none; border: 1px solid var(--line); background: #fff; color: var(--ink); font: inherit; font-size: 14px; font-weight: 600;
     padding: 9px 14px; border-radius: 999px; cursor: pointer; transition: all .2s ease;
   }
-  .tab .n { color: var(--muted); font-weight: 500; margin-left: 4px; }
   .tab[aria-pressed="true"] { background: var(--fac); border-color: var(--fac); color: #fff; }
-  .tab[aria-pressed="true"] .n { color: rgba(255,255,255,.75); }
 
   .ingreso {
     display: flex; align-items: center; gap: 14px; flex-wrap: wrap; text-decoration: none;
@@ -622,9 +620,7 @@ function renderHome() {
       <div><h2>Facultades</h2><p>Elegí una facultad para ver los aranceles de sus carreras.</p></div>
     </div>
     <div class="fac-grid">
-      ${FACULTADES.map((f, i) => {
-        const n = PROGRAMS.filter(p => p.fac === f.id).length;
-        return `
+      ${FACULTADES.map((f, i) => `
         <a class="fac-card" href="#/${f.id}" style="--c:${f.color};animation-delay:${i * 45}ms">
           <span class="wm">${icon(f.icono)}</span>
           <div>
@@ -633,11 +629,10 @@ function renderHome() {
             <h3>${esc(f.nombre)}</h3>
           </div>
           <div class="foot">
-            <span>${n} ${n === 1 ? 'propuesta' : 'propuestas'}</span>
+            <span>Ver aranceles</span>
             <span class="go">${icon('right')}</span>
           </div>
-        </a>`;
-      }).join('')}
+        </a>`).join('')}
     </div>
     ${cohorte().examenIngreso ? `
     <div class="help">
@@ -682,10 +677,8 @@ function renderFaculty(fac) {
     <div class="toolbar">
       ${searchBox('Buscá una carrera…')}
       ${cats.length > 1 ? `<div class="tabs" role="toolbar" aria-label="Tipo de propuesta">
-        ${['Todas', ...cats].map(c => {
-          const n = c === 'Todas' ? items.length : items.filter(it => it.p.cat === c).length;
-          return `<button type="button" class="tab" data-cat="${esc(c)}" aria-pressed="${state.cat === c}">${esc(c)}<span class="n">${n}</span></button>`;
-        }).join('')}
+        ${['Todas', ...cats].map(c =>
+          `<button type="button" class="tab" data-cat="${esc(c)}" aria-pressed="${state.cat === c}">${esc(c)}</button>`).join('')}
       </div>` : ''}
     </div>
     <div id="list"></div>`;
