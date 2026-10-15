@@ -308,6 +308,7 @@ const FACULTADES = [
    · Lista oficial: planilla "CAOS_sin_hibrida_costa_flexible" (solo estas
      carreras se muestran). Nombres corregidos con crm.uade.edu.ar/Aranceles.
    · Comunicación, Comunicación Global, Publicidad y RR.PP. van en FAJU.
+   · Sin diplomaturas, planes/programas conjuntos ni modalidad intensiva.
    · Hoy solo se muestra Marzo (ver CONFIG.cohortes); la columna Agosto queda guardada.
    · Las variantes de sede/modalidad van entre paréntesis y se agrupan
      solas bajo la misma carrera: "Abogacía (Sede Recoleta)".
@@ -315,7 +316,6 @@ const FACULTADES = [
 const CARRERAS = [
   ["FAJU", "Abogacía", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/abogaciaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/abogaciaAgosto.pdf"],
   ["FAJU", "Abogacía (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/abogacia_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/abogacia_recoletaAgosto.pdf"],
-  ["FAJU", "Diplomatura en Derecho y Tecnología", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploderechoytecnoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploderechoytecnoAgosto.pdf"],
   ["FAJU", "Doble Titulación Abogacía y Gobierno y Relaciones Internacionales (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/pcabogobrelint_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pcabogobrelint_recoletaAgosto.pdf"],
   ["FAJU", "Licenciatura en Criminología y Ciberdelito", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/criminologiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/criminologiaAgosto.pdf"],
   ["FAJU", "Licenciatura en Gobierno y Relaciones Internacionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/GobiernoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/GobiernoAgosto.pdf"],
@@ -324,13 +324,6 @@ const CARRERAS = [
   ["FAJU", "Martillero público, corredor y administrador de consorcios (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/martillero_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/martillero_onlineAgosto.pdf"],
   ["FAJU", "Traductorado público en idioma inglés", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/traductorado_publicoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/traductorado_publicoAgosto.pdf"],
   ["FAJU", "Traductorado público en idioma inglés - Ciclo", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/traductorado_cicloMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/traductorado_cicloAgosto.pdf"],
-  ["FAJU", "Plan Conjunto Traductor Público en Idioma Inglés - Intérprete Simultáneo de Idioma Inglés", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/interpretariadoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pctradintAgosto.pdf"],
-  ["FAJU", "Programa Conjunto Abogacía y Gobierno y Relaciones Internacionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/pcabogad_gob_relintMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pcabogad_gob_relintAgosto.pdf"],
-  ["FAJU", "Programa Conjunto Política y Administración Pública - Gobierno y Relaciones Internacionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/pcpol_adm_pub_gob_relintMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pcpol_adm_pub_gob_relintAgosto.pdf"],
-  ["FAJU", "Programa Conjunto Traductorado Público en Idioma Inglés y Traductorado Científico - Técnico de Idioma Inglés", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/pctradcientMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/pctradintAgosto.pdf"],
-  ["FAEN", "Diplomatura en Comunicación Política Digital", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocompolidigitalMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocompolidigitalAgosto.pdf"],
-  ["FAEN", "Diplomatura en Contenido para Redes Sociales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocontredesocialesMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocontredesocialesAgosto.pdf"],
-  ["FAEN", "Diplomatura en Gestión de Plataformas Digitales de Entretenimiento", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplogestplataformasMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplogestplataformasAgosto.pdf"],
   ["FAEN", "Gastronomía (Ciclo de Complementación Curricular)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ciclo_gastronomiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ciclo_gastronomiaAgosto.pdf"],
   ["FAEN", "Gestión deportiva", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_deportivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_deportivaAgosto.pdf"],
   ["FAEN", "Licenciatura en artes escénicas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/artes_escenicasMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/artes_escenicasAgosto.pdf"],
@@ -354,25 +347,19 @@ const CARRERAS = [
   ["FAEN", "Licenciatura en Turismo y Hotelería + BA in Hospitality Management", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/turismoSIU.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/turismoSIU.pdf"],
   ["FAJU", "Licenciatura en Publicidad (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/publicidad_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/publicidad_recoletaAgosto.pdf"],
   ["FAJU", "Licenciatura en relaciones públicas e institucionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrppMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrppAgosto.pdf"],
-  ["FAJU", "Licenciatura en Relaciones Públicas e Institucionales (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrpp_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrpp_intensivaAgosto.pdf"],
   ["FAEN", "Licenciatura en turismo y hotelería", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/turismoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/turismoAgosto.pdf"],
   ["FAEN", "Periodismo deportivo", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/periodismo_deportivoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/periodismo_deportivoAgosto.pdf"],
-  ["FAJU", "Plan conjunto licenciado en relaciones públicas e institucionales - Licenciado en gobierno y relaciones internacionales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrpp+rel_intMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrpp+rel_intAgosto.pdf"],
-  ["FAJU", "Plan conjunto licenciado en relaciones públicas e institucionales y ciencias de la comunicación", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrpp+comuMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrpp+comuAgosto.pdf"],
   ["FAEN", "Programa corto de Actuación", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/actuacionMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/actuacionAgosto.pdf"],
   ["FAEN", "Programa corto de organización de eventos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_de_eventosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_de_eventosAgosto.pdf"],
   ["FAEN", "Programa corto de producción de espectáculos artísticos y musicales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/espectaculosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/espectaculosAgosto.pdf"],
   ["FAEN", "Tecnicatura en arte culinario", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/arteculinarioMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/arteculinarioAgosto.pdf"],
   ["FAEN", "Licenciatura en Comunicación Digital e Interactiva", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comunicacion_digitalMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/comunicacion_digitalAgosto.pdf"],
   ["FASA", "Licenciatura en Ciencias de Comportamiento", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comportamientoMarzo.pdf", ""],
-  ["FASA", "Diplomatura Avanzada en Gestión de Servicios de Salud Online", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplosaludavanzadaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplosaludAgosto.pdf"],
-  ["FASA", "Diplomatura en Gestión de Servicios de Salud", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplosaludMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplosaludAgosto.pdf"],
   ["FASA", "Licenciatura en Gestión de Servicios de Salud", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/saludMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/saludAgosto.pdf"],
   ["FASA", "Licenciatura en Gestión de Servicios de Salud - Ciclo", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/salud_cicloMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/salud_cicloAgosto.pdf"],
   ["FASA", "Licenciatura en Gestión de Servicios de Salud (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/salud_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/salud_onlineAgosto.pdf"],
   ["FASA", "Licenciatura en Gestión de Servicios de Salud - Ciclo (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/salud_ciclo_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/salud_ciclo_onlineAgosto.pdf"],
   ["FASA", "Licenciatura en nutrición", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/nutricionMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/nutricionAgosto.pdf"],
-  ["FASA", "Licenciatura en Nutrición (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/nutricion_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/nutricion_intensivaAgosto.pdf"],
   ["FASA", "Licenciatura en nutrición Online", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/nutricion_onlineMarzo.pdf", ""],
   ["FASA", "Licenciatura en psicología", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/psicologiaAgosto.pdf"],
   ["FASA", "Licenciatura en Psicología (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologia_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02agosto/psicologia_onlineagosto.pdf"],
@@ -380,15 +367,10 @@ const CARRERAS = [
   ["FASA", "Licenciatura en Psicología (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/psicologia_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/psicologia_recoletaAgosto.pdf"],
   ["FASA", "Licenciatura en Tecnología de Datos con Orientación Salud Digital", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/saludigitalmarzo.pdf", ""],
   ["FACE", "Contador público", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ContadorMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ContadorAgosto.pdf"],
-  ["FACE", "Diplomatura en Administración de Inversiones Financieras", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploinvfinMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploinvfinAgosto.pdf"],
-  ["FACE", "Diplomatura en Criptomonedas y Finanzas Sustentables", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplo_criptoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplo_criptoAgosto.pdf"],
-  ["FACE", "Diplomatura en FinTech", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplofintechMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplofintechAgosto.pdf"],
-  ["FACE", "Diplomatura en Sistemas de Gestión Empresarial SAP Next-Gen", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplo_sapMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplo_sapAgosto.pdf"],
   ["FACE", "Economía Empresarial Belgrano", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/eco_empresarial_BelgranoMarzo.pdf", ""],
   ["FACE", "Licenciatura en administración de empresas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/laeMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/laeAgosto.pdf"],
   ["FACE", "Licenciatura en Administración de Empresas + BA in Business", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/LAE_SIUMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/LAE_SIUAgosto.pdf"],
   ["FACE", "Licenciatura en Administración de Empresas + BA in Business (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/siu_OnlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/siu_OnlineAgosto.pdf"],
-  ["FACE", "Licenciatura en Administración de Empresas (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_intensivaAgosto.pdf"],
   ["FACE", "Licenciatura en administración de empresas (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_onlineAgosto.pdf"],
   ["FACE", "Licenciatura en Administración de Empresas (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_belgranoAgosto.pdf"],
   ["FACE", "Licenciatura en Administración de Empresas (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_recoletaAgosto.pdf"],
@@ -406,24 +388,9 @@ const CARRERAS = [
   ["FACE", "Licenciatura en economía", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/economiaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/economiaAgosto.pdf"],
   ["FACE", "Licenciatura en finanzas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/finanzasMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/finanzasAgosto.pdf"],
   ["FACE", "Licenciatura en Finanzas Digitales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/licenfinanzas_digMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/licenfinanzas_digagosto.pdf"],
-  ["FACE", "Licenciatura en recursos humanos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrhhMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrhhAgosto.pdf"],
-  ["FACE", "Plan conjunto Licenciatura en economía y Licenciatura en finanzas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/eco_y_finMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/eco_y_finAgosto.pdf"],
-  ["FACE", "Programa conjunto Contador público y Licenciatura en finanzas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/cp+finMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/cp+finAgosto.pdf"],
-  ["FACE", "Programa conjunto Contador y abogado", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/cp+aboMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/cp+aboAgosto.pdf"],
-  ["FACE", "Programa conjunto en administración y finanzas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae_y_finMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae_y_finAgosto.pdf"],
-  ["FACE", "Programa Conjunto Contador Público y Administración de Empresas", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/cp+laeMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/cp+laeAgosto.pdf"],
-  ["FACE", "Programa conjunto Licenciado en administración de empresas y Licenciado en comercialización", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae+comMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae+comAgosto.pdf"],
-  ["FACE", "Programa conjunto Licenciado en administración de empresas y Licenciado en recursos humanos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae+rrhhMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae+rrhhAgosto.pdf"],
-  ["FACE", "Programa conjunto Licenciatura en administración de empresas y Licenciatura en comercio internacional", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lae+ciMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lae+ciAgosto.pdf"],
-  ["FACE", "Programa conjunto Licenciatura en comercialización y Licenciatura en comercio internacional", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/com+ciMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/com+ciAgosto.pdf"],
+  ["FACE", "Licenciatura en Recursos Humanos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/rrhhMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/rrhhAgosto.pdf"],
   ["FACE", "Tecnicatura en Comercio Electrónico e Innovación Digital", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/comercio_electronicoMarzo.pdf", ""],
   ["FACE", "Tecnicatura Finanzas Digitales", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/finanzas_digMarzo.pdf", ""],
-  ["FAIN", "Diplomatura en Automatización y Prototipado", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploautomatizMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploautomatizAgosto.pdf"],
-  ["FAIN", "Diplomatura en Ciencias de Datos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocienciadatosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocienciadatosAgosto.pdf"],
-  ["FAIN", "Diplomatura en Comercialización Agropecuaria", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplocomagropMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplocomagropAgosto.pdf"],
-  ["FAIN", "Diplomatura en Desarrollo Web Full Stack", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplodesarrollowebMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplodesarrollowebAgosto.pdf"],
-  ["FAIN", "Diplomatura en Recursos Naturales y Ambiente", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplorecursosnatMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplorecursosnatAgosto.pdf"],
-  ["FAIN", "Diplomatura Universitaria en Alimentos Saludables y Sustentables", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diploalisaludablesMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diploalisaludablesAgosto.pdf"],
   ["FAIN", "Ingeniería Industrial (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/industrial_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/industrial_belgranoAgosto.pdf"],
   ["FAIN", "Ingeniería Informática (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informatica_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informatica_belgranoAgosto.pdf"],
   ["FAIN", "Ingeniería Informática (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informatica_recoletaMarzo.pdf", ""],
@@ -438,21 +405,15 @@ const CARRERAS = [
   ["FAIN", "Licenciatura en gestión ambiental", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/gestion_ambientalMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/gestion_ambientalAgosto.pdf"],
   ["FAIN", "Licenciatura en Gestión Ambiental (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ambiental_belgranoMarzo.pdf", ""],
   ["FAIN", "Licenciatura en gestión de la tecnología de la información", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacionMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacionAgosto.pdf"],
-  ["FAIN", "Licenciatura en Gestión de la tecnología de la información (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacion_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacion_intensivaAgosto.pdf"],
   ["FAIN", "Licenciatura en Gestión de Tecnología de la Información (Online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacion_onlineMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacion_onlineAgosto.pdf"],
   ["FAIN", "Licenciatura en Gestión de Tecnología de la Información (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/informacion_belgranoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/informacion_belgranoAgosto.pdf"],
   ["FAIN", "Licenciatura en Inteligencia Artificial y Ciencia de Datos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/intartificialMarzo.pdf", ""],
   ["FAIN", "Licenciatura en Inteligencia Artificial y Ciencia de Datos (Sede Belgrano)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/intartificial_BelgranoMarzo.pdf", ""],
   ["FAIN", "Licenciatura en producción y gestión agropecuaria", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/agropecuariaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/agropecuariaAgosto.pdf"],
   ["FAIN", "Licenciatura en tecnología industrial de los alimentos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/lic_alimentosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/lic_alimentosAgosto.pdf"],
-  ["FAIN", "Plan conjunto licenciatura en tecnología industrial de los alimentos - Licenciatura en biotecnología", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ali+bioMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ali+bioAgosto.pdf"],
-  ["FAIN", "Programa conjunto ingeniería industrial e ingeniería electromecánica", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/ind_elecMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/ind_elecAgosto.pdf"],
   ["FAIN", "Tecnicatura universitaria en desarrollo de video juegos", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/videojuegosMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/videojuegosAgosto.pdf"],
   ["FAIN", "Tecnicatura universitaria en desarrollo del software", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/softwareMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/softwareAgosto.pdf"],
   ["FAIN", "Tecnicatura universitaria en desarrollo del software (online)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/software_onlineMarzo.pdf", ""],
-  ["FADI", "Diplomatura en Desarrollo Inmobiliario Urbano", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplodesurbanoMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/diplodesurbanoAgosto.pdf"],
-  ["FADI", "Diplomatura en Diseño de Identidad Visual", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/IdentiDataMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/IdentiDataAgosto.pdf"],
-  ["FADI", "Diplomatura Estilismo y Narrativas para la Moda", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/diplomodaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02agosto/diplomodaestagosto.pdf"],
   ["FADI", "Doble Titulación - Productos Interactivos y Realidad Virtual y Diseño Multimedia e Interacción", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/prodinterac_multimediaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/prodinterac_multimediaAgosto.pdf"],
   ["FADI", "Licenciatura en diseño de interiores", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_de_interioresMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_de_interioresAgosto.pdf"],
   ["FADI", "Licenciatura en Diseño de Productos Interactivos y Realidad Virtual", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/intercativos_realvirtMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/intercativos_realvirtAgosto.pdf"],
@@ -461,10 +422,8 @@ const CARRERAS = [
   ["FADI", "Licenciatura en diseño industrial", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_industrialMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_industrialAgosto.pdf"],
   ["FADI", "Licenciatura en diseño multimedia y de interacción", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_multimediaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_multimediaAgosto.pdf"],
   ["FADI", "Licenciatura en Diseño Textil e Indumentaria", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_textilMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_textilAgosto.pdf"],
-  ["FADI", "Licenciatura en diseño multimedia y de interacción (Mod. Intensiva)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_multimedia_intensivaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_multimedia_intensivaAgosto.pdf"],
   ["FADI", "Licenciatura en diseño y gestión de estéticas para la moda", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_modaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_modaAgosto.pdf"],
   ["FADI", "Licenciatura en Diseño y Gestión de Estéticas para la Moda (Sede Recoleta)", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/disenio_moda_recoletaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/disenio_moda_recoletaAgosto.pdf"],
-  ["FADI", "Plan conjunto licenciado en diseño gráfico - Licenciado en diseño multimedia y de interacción", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/grafico_multimediaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/grafico+multimediaAgosto.pdf"],
   ["FARU", "Arquitectura", "https://www.dre.uade.edu.ar/Aranceles/01Marzo/arquitecturaMarzo.pdf", "https://www.dre.uade.edu.ar/Aranceles/02Agosto/arquitecturaAgosto.pdf"]
 ];
 
@@ -525,13 +484,13 @@ function splitName(name) {
 
 function category(base) {
   const n = norm(base);
-  if (/^(diplomatura|programa corto|curso)/.test(n)) return 'Diplomaturas y cursos';
+  if (/^(diplomatura|programa corto|curso)/.test(n)) return 'Programas cortos y cursos';
   if (/^(plan conjunto|programa conjunto|doble titulacion)/.test(n)) return 'Dobles titulaciones';
   if (/\bciclo\b/.test(n)) return 'Ciclos de complementación';
   if (/^(tecnicatura|cocinero|martillero)/.test(n)) return 'Tecnicaturas y carreras cortas';
   return 'Carreras de grado';
 }
-const CAT_ORDER = ['Carreras de grado', 'Dobles titulaciones', 'Ciclos de complementación', 'Tecnicaturas y carreras cortas', 'Diplomaturas y cursos'];
+const CAT_ORDER = ['Carreras de grado', 'Dobles titulaciones', 'Ciclos de complementación', 'Tecnicaturas y carreras cortas', 'Programas cortos y cursos'];
 
 const upperCount = s => (s.match(/[A-ZÁÉÍÓÚÑ]/g) || []).length;
 const capFirst = s => s.charAt(0).toUpperCase() + s.slice(1);
